@@ -10,16 +10,16 @@ public class UserController {
 
     @GetMapping("/")
     public String homepage() {
-        return "NotFoundPage";
+        return "HomePage";
     }
 
     @GetMapping("/login")
     public String login() {
-        return "NotFoundPage";
+        return "Login";
     }
 
-    @GetMapping("/registration")
+    @GetMapping("/register")
     public String registration() {
-        return "NotFoundPage";
+        return "Registration";
     }
 }
