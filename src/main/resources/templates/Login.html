@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
+    <html xmlns:th="http://www.thymeleaf.org"> </html>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход - CaseChanger</title>
-    <link rel="stylesheet" href="../static/css/Authorization.css">
+    <link rel="stylesheet" th:href="@{/css/Authorization.css}">
 </head>
 <body>
     <div class="auth-container">
