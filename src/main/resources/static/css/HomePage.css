@@ -1,0 +1,140 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #0a0a0a, #1f1f1f);
+    color: #cccccc;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background: #121212;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo a {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00ffc6;
+    margin: 0 10px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.logo a:hover {
+    color: #ff2e63;
+}
+
+.nav a {
+    color: #cccccc;
+    margin-left: 20px;
+    text-decoration: none;
+    transition: color 0.3s;
+    line-height: 40px;
+}
+
+.nav a:hover {
+    color: #00ffc6;
+}
+
+.hero {
+    text-align: center;
+    padding: 140px 20px;
+    background: linear-gradient(135deg, #212121, #292929);
+}
+
+.hero h1 {
+    font-size: 48px;
+    color: #00ffc6;
+}
+
+.hero p {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #ffffff;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 15px 30px;
+    background: #ff2e63;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 30px;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background: #e6004c;
+}
+
+.how-it-works, .popular-cases, .security {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.how-it-works h2, .popular-cases h2, .security h2 {
+    font-size: 32px;
+    margin-bottom: 40px;
+    color: #00ffc6;
+}
+
+.steps, .cases {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.step, .case {
+    background: #1f1f1f;
+    padding: 20px;
+    border-radius: 12px;
+    width: 250px;
+    font-size: 18px;
+}
+
+.footer {
+    background: #121212;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+.socials a {
+    color: #00ffc6;
+    margin: 0 10px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.socials a:hover {
+    color: #ff2e63;
+}
