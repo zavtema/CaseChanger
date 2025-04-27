@@ -22,6 +22,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
+    justify-content: space-between;
 }
 
 .header {
@@ -37,20 +38,13 @@ body {
     align-items: center;
 }
 
-.logo a {
-    font-size: 24px;
-    font-weight: bold;
-    color: #00ffc6;
-    margin: 0 10px;
-    text-decoration: none;
-    transition: color 0.3s;
+.nav-left,
+.nav-right {
+    display: flex;
 }
 
-.logo a:hover {
-    color: #ff2e63;
-}
-
-.nav a {
+.nav-left a,
+.nav-right a {
     color: #cccccc;
     margin-left: 20px;
     text-decoration: none;
@@ -58,9 +52,25 @@ body {
     line-height: 40px;
 }
 
-.nav a:hover {
+.nav-left a:hover,
+.nav-right a:hover {
     color: #00ffc6;
 }
+
+.logo a {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00ffc6;
+    margin: 0 10px;
+    text-decoration: none;
+    transition: color 0.3s;
+    line-height: 35px;
+}
+
+.logo a:hover {
+    color: #ff2e63;
+}
+
 
 .hero {
     text-align: center;
