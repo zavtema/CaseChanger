@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <html xmlns:th="http://www.thymeleaf.org"> </html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация - CaseChanger</title>
-    <link rel="stylesheet" th:href="@{/css/Authorization.css}">
-    <script th:src="@{/js/Registration.js}"></script>
+    <link rel="stylesheet" href="/css/Authorization.css">
+    <script src="/js/Registration.js" defer></script>
 </head>
 <body>
     <div class="auth-container">
         <h1>Регистрация в CaseChanger</h1>
-        <form method="post" action="/register">
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <input type="password" id="confirmPassword" placeholder="ConfirmPassword" required>
+        <form id="registerForm">
+            <input type="text" id="login" name="login" placeholder="login" required>
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
             <button type="submit" class="btn">Зарегистрироваться</button>
         </form>
         <p>Уже есть аккаунт? <a href="/login">Войти</a></p>

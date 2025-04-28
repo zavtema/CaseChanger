@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserApi {
     private final UserService userService;
-
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
         try {
