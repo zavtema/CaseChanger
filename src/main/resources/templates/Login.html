@@ -1,19 +1,26 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <html xmlns:th="http://www.thymeleaf.org"> </html>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход - CaseChanger</title>
-    <link rel="stylesheet" th:href="@{/css/Authorization.css}">
+    <link rel="stylesheet" href="/css/Authorization.css">
+    <script src="/js/Login.js" defer></script>
 </head>
 <body>
     <div class="auth-container">
         <h1>Вход в CaseChanger</h1>
-        <form method="post" action="/login">
-            <input type="text" name="username" placeholder="Логин или Email" required>
-            <input type="password" name="password" placeholder="Пароль" required>
+        <form id="loginForm">
+            <div class="input-group">
+                <input type="text" id="login" name="login" placeholder="Username">
+                <div class="error" id="loginError"></div>
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="password" name="password" placeholder="Password">
+                <div class="error" id="passwordError"></div>
+            </div>
+
             <button type="submit" class="btn">Войти</button>
         </form>
         <p>Нет аккаунта? <a href="/register">Зарегистрироваться</a></p>
