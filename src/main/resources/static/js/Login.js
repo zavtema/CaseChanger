@@ -1,79 +1,86 @@
-document.getElementById('loginForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    const loginInput = document.getElementById('login');  // ТУТ login, а не username
+    const passwordInput = document.getElementById('password');
+    const loginError = document.getElementById('loginError');
+    const passwordError = document.getElementById('passwordError');
 
-    document.getElementById('login').classList.remove('error-input');
-    document.getElementById('password').classList.remove('error-input');
-
-    document.getElementById('loginError').classList.remove('show');
-    document.getElementById('passwordError').classList.remove('show');
-
-    document.getElementById('loginError').textContent = '';
-    document.getElementById('passwordError').textContent = '';
-
-
-    const login = document.getElementById('login').value;
-    const password = document.getElementById('password').value;
-
-    if (login == "") {
-        document.getElementById('login').classList.add('error-input');
-        document.getElementById('loginError').textContent = 'Имя не может быть пустым';
-        document.getElementById('loginError').classList.add('show');
-        return;
-    } else if (login.length <= 3) {
-        document.getElementById('login').classList.add('error-input');
-        document.getElementById('loginError').textContent = 'Имя должно содержать хотя бы 4 символа';
-        document.getElementById('loginError').classList.add('show');
-        return;
-    } else if (!/^[a-zA-Z0-9_]+$/.test(login)) {
-        document.getElementById('login').classList.add('error-input');
-        document.getElementById('loginError').textContent = 'Имя содержит недопустимые символы';
-        document.getElementById('loginError').classList.add('show');
-        return;
+    function clearErrors() {
+        loginInput.classList.remove('error-input');
+        passwordInput.classList.remove('error-input');
+        loginError.classList.remove('show');
+        passwordError.classList.remove('show');
+        loginError.textContent = '';
+        passwordError.textContent = '';
     }
 
-    if (password == "") {
-        document.getElementById('password').classList.add('error-input');
-        document.getElementById('passwordError').textContent = 'Пароль не может быть пустым';
-        document.getElementById('passwordError').classList.add('show');
-        return;
-    } else if (password.length <= 7) {
-        document.getElementById('password').classList.add('error-input');
-        document.getElementById('passwordError').textContent = 'Пароль должен содержать хотя бы 8 символов';
-        document.getElementById('passwordError').classList.add('show');
-        return;
+    function showError(input, errorElement, message) {
+        input.classList.add('error-input');
+        errorElement.textContent = message;
+        errorElement.classList.add('show');
     }
 
-    const response = await fetch('http://localhost:8080/api/users/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ login , password })
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        clearErrors();
+
+        const login = loginInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        let hasError = false;
+
+        if (login === "") {
+            showError(loginInput, loginError, 'Имя не может быть пустым');
+            hasError = true;
+        } else if (login.length <= 3) {
+            showError(loginInput, loginError, 'Имя должно содержать хотя бы 4 символа');
+            hasError = true;
+        } else if (!/^[a-zA-Z0-9_]+$/.test(login)) {
+            showError(loginInput, loginError, 'Имя содержит недопустимые символы');
+            hasError = true;
+        }
+
+        if (password === "") {
+            showError(passwordInput, passwordError, 'Пароль не может быть пустым');
+            hasError = true;
+        } else if (password.length <= 7) {
+            showError(passwordInput, passwordError, 'Пароль должен содержать хотя бы 8 символов');
+            hasError = true;
+        }
+
+        if (hasError) {
+            return;
+        }
+
+        // Реальная отправка формы
+        const realForm = document.createElement('form');
+        realForm.method = 'POST';
+        realForm.action = '/login';
+
+        const usernameField = document.createElement('input');
+        usernameField.type = 'hidden';
+        usernameField.name = 'username';
+        usernameField.value = login;
+
+        const passwordField = document.createElement('input');
+        passwordField.type = 'hidden';
+        passwordField.name = 'password';
+        passwordField.value = password;
+
+        realForm.appendChild(usernameField);
+        realForm.appendChild(passwordField);
+
+        document.body.appendChild(realForm);
+        realForm.submit();
     });
 
-    if (response.ok) {
-        window.location.assign("/");
-    } else {
-        const errorText = await response.text();
-        if (errorText == "Пользователь с таким именем не найден") {
-            document.getElementById('login').classList.add('error-input');
-            document.getElementById('loginError').textContent = 'Пользователь с таким именем не найден';
-            document.getElementById('loginError').classList.add('show');
-        } else if (errorText == "Неверный логин или пароль") {
-            document.getElementById('login').classList.add('error-input');
-            document.getElementById('password').classList.add('error-input');
-            document.getElementById('passwordError').textContent = 'Неверный логин или пароль';
-            document.getElementById('passwordError').classList.add('show');
-       }
-    }
+    loginInput.addEventListener('input', function() {
+        loginInput.classList.remove('error-input');
+        loginError.textContent = "";
+    });
+
+    passwordInput.addEventListener('input', function() {
+        passwordInput.classList.remove('error-input');
+        passwordError.textContent = "";
+    });
 });
-
-document.getElementById('password').addEventListener('input', function() {
-    document.getElementById('password').classList.remove('error-input');
-    document.getElementById('confirmPasswordError').innerText = ""
-})
-
-document.getElementById('login').addEventListener('input', function() {
-    document.getElementById('login').classList.remove('error-input');
-    document.getElementById('loginError').innerText = ""
-})

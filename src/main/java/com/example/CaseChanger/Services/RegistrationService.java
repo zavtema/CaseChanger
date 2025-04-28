@@ -3,17 +3,17 @@ package com.example.CaseChanger.Services;
 
 import com.example.CaseChanger.Models.User;
 import com.example.CaseChanger.Repositories.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.apache.catalina.Manager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @AllArgsConstructor
-public class UserService {
+public class RegistrationService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     public void register(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("Email занят!");
@@ -21,6 +21,8 @@ public class UserService {
         if (userRepository.existsByLogin(user.getLogin())) {
             throw new IllegalArgumentException("Логин занят!");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        log.info("Saving new User with email {}", user.getEmail()); // Logger от @Slf4j (Lombok)
         userRepository.save(user);  // Сохранение с UNIQUE-проверкой в БД, понимает куда сохранять т.к. класс User помечен аннотацией @Entity
     }
 }

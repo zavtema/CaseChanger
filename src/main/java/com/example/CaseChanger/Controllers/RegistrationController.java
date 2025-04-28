@@ -1,7 +1,7 @@
 package com.example.CaseChanger.Controllers;
 
 import com.example.CaseChanger.Models.User;
-import com.example.CaseChanger.Services.UserService;
+import com.example.CaseChanger.Services.RegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-public class UserApi {
-    private final UserService userService;
+public class RegistrationController {
+    private final RegistrationService userService;
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user) {
         try {
