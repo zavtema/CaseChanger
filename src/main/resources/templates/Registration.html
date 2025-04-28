@@ -6,15 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация - CaseChanger</title>
     <link rel="stylesheet" th:href="@{/css/Authorization.css}">
+    <script th:src="@{/js/Registration.js}"></script>
 </head>
 <body>
     <div class="auth-container">
         <h1>Регистрация в CaseChanger</h1>
         <form method="post" action="/register">
-            <input type="text" name="username" placeholder="Имя пользователя" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Пароль" required>
-            <input type="password" name="confirmPassword" placeholder="Повторите пароль" required>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="password" id="confirmPassword" placeholder="ConfirmPassword" required>
             <button type="submit" class="btn">Зарегистрироваться</button>
         </form>
         <p>Уже есть аккаунт? <a href="/login">Войти</a></p>
