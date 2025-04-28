@@ -11,10 +11,26 @@
     <div class="auth-container">
         <h1>Регистрация в CaseChanger</h1>
         <form id="registerForm">
-            <input type="text" id="login" name="login" placeholder="login" required>
-            <input type="email" id="email" name="email" placeholder="Email" required>
-            <input type="password" id="password" name="password" placeholder="Password" required>
-            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+            <div class="input-group">
+                <input type="text" id="login" name="login" placeholder="Username">
+                <div class="error" id="loginError"></div>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="email" name="email" placeholder="Email">
+                <div class="error" id="emailError"></div>
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="password" name="password" placeholder="Password">
+                <div class="error" id="passwordError"></div>
+            </div>
+
+            <div class="input-group">
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+                <div class="error" id="confirmPasswordError"></div>
+            </div>
+
             <button type="submit" class="btn">Зарегистрироваться</button>
         </form>
         <p>Уже есть аккаунт? <a href="/login">Войти</a></p>

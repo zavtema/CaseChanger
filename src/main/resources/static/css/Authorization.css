@@ -33,6 +33,7 @@ body {
 }
 
 .auth-container input {
+    width: 94%;
     padding: 12px;
     margin-bottom: 15px;
     border: none;
@@ -107,4 +108,39 @@ body {
     margin-bottom: 20px;
     border-radius: 8px;
     font-weight: bold;
+}
+
+.error-input {
+    border: 2px solid #FF2E63 !important;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* Ошибки */
+.error {
+    font-size: 13px;
+    color: #FF5555;
+    margin-top: 0px;
+    opacity: 0;
+    transform: translateY(-50px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    align-self: flex-start;
+    padding-left: 5px;
+}
+
+/* Показываем ошибку */
+.error.show {
+    opacity: 1;
+    transform: translateY(-10px);
+}
+
+.error.hide {
+    opacity: 0;
+    transform: translateY(-50px);
 }
