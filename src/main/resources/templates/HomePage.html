@@ -8,27 +8,8 @@
     <script src="/js/HomePage.js"></script>
 </head>
 <body>
-<header class="header">
-    <div class="header-container">
-        <nav class="nav-left">
-            <div class="logo">
-                <a href="#">CaseChanger</a>
-            </div>
-            <a href="#">Обмен</a>
-            <a href="#how">Как это работает</a>
-            <a href="#support">Поддержка</a>
-        </nav>
-        <nav class="nav-right">
-            <div th:if="${#authorization.expression('isAnonymous()')}">
-                <a href="/login">Войти</a>
-                <a href="/register">Зарегистрироваться</a>
-            </div>
-            <div th:if="${#authorization.expression('isAuthenticated()')}">
-                <a href=""><span th:text="${#authentication.name}">username</span></a>
-            </div>
-        </nav>
-    </div>
-</header>
+
+<div th:replace="Header & footer :: siteHeader"></div>
 
 <section class="hero">
     <div class="container reveal">
@@ -69,15 +50,7 @@
     </div>
 </section>
 
-<footer class="footer">
-    <div class="container">
-        <p>&copy; 2025 CaseChanger. Все права защищены.</p>
-        <div class="socials">
-            <a href="https://www.youtube.com/@AndoR21">YouTube</a>
-            <a href="https://vk.com/zavtema">VK</a>
-            <a href="https://t.me/zavtema">Telegram</a>
-        </div>
-    </div>
-</footer>
+<div th:replace="Header & footer :: siteFooter"></div>
+
 </body>
 </html>
