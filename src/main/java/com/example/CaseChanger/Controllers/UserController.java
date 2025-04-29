@@ -21,4 +21,9 @@ public class UserController {
     public String registration() {
         return "Registration";
     }
+
+    @GetMapping("/profile")
+    public String profile() {
+        return "Profile";
+    }
 }

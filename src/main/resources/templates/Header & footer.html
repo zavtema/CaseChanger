@@ -5,11 +5,11 @@
     <div class="header-container">
       <nav class="nav-left">
         <div class="logo">
-          <a href="#">CaseChanger</a>
+          <a href="/">CaseChanger</a>
         </div>
-        <a href="#">Обмен</a>
-        <a href="#how">Как это работает</a>
-        <a href="#support">Поддержка</a>
+        <a href="/#">Обмен</a>
+        <a href="/#how">Как это работает</a>
+        <a href="/#support">Поддержка</a>
       </nav>
       <nav class="nav-right">
         <div th:if="${#authorization.expression('isAnonymous()')}">
@@ -17,7 +17,7 @@
           <a href="/register">Зарегистрироваться</a>
         </div>
         <div th:if="${#authorization.expression('isAuthenticated()')}">
-          <a href=""><span th:text="${#authentication.name}">username</span></a>
+          <a href="/profile"><span th:text="${#authentication.name}">username</span></a>
         </div>
       </nav>
     </div>
