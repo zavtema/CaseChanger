@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CaseChanger - Обмен кейсов CS2</title>
     <link rel="stylesheet" th:href="@{/css/HomePage.css}">
+    <script src="/js/HomePage.js"></script>
 </head>
 <body>
 <header class="header">
@@ -18,21 +19,28 @@
             <a href="#support">Поддержка</a>
         </nav>
         <nav class="nav-right">
-            <a href="/login">Войти</a>
-            <a href="/register">Зарегистрироваться</a>
+            <div th:if="${#authorization.expression('isAnonymous()')}">
+                <a href="/login">Войти</a>
+                <a href="/register">Зарегистрироваться</a>
+            </div>
+            <div th:if="${#authorization.expression('isAuthenticated()')}">
+                <a href=""><span th:text="${#authentication.name}">username</span></a>
+            </div>
         </nav>
     </div>
 </header>
 
 <section class="hero">
-    <div class="container">
-        <h1>Обменивай кейсы CS2 на скины</h1>
+    <div class="container reveal">
+        <div class="typewriter-wrapper">
+            <h1 id="typewriter" class="typewriter">Обменивай кейсы CS2 на скины</h1>
+        </div>
         <p>Просто, быстро и безопасно</p>
         <a href="#" class="btn">Начать обмен</a>
     </div>
 </section>
 
-<section id="how" class="how-it-works">
+<section id="how" class="how-it-works reveal">
     <div class="container">
         <h2>Как это работает</h2>
         <div class="steps">
@@ -43,7 +51,7 @@
     </div>
 </section>
 
-<section id="cases" class="popular-cases">
+<section id="cases" class="popular-cases reveal">
     <div class="container">
         <h2>Популярные кейсы</h2>
         <div class="cases">
@@ -54,7 +62,7 @@
     </div>
 </section>
 
-<section class="security">
+<section class="security reveal">
     <div class="container">
         <h2>Безопасность на первом месте</h2>
         <p>Ваши данные под защитой. Работаем честно и открыто с 2025 года.</p>
