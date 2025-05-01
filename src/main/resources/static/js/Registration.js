@@ -72,7 +72,25 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     });
 
     if (response.ok) {
-        window.location.assign("/");
+        const realForm = document.createElement('form');
+        realForm.method = 'POST';
+        realForm.action = '/login';
+
+        const usernameField = document.createElement('input');
+        usernameField.type = 'hidden';
+        usernameField.name = 'username';
+        usernameField.value = login;
+
+        const passwordField = document.createElement('input');
+        passwordField.type = 'hidden';
+        passwordField.name = 'password';
+        passwordField.value = password;
+
+        realForm.appendChild(usernameField);
+        realForm.appendChild(passwordField);
+
+        document.body.appendChild(realForm);
+        realForm.submit();
     } else {
         const errorText = await response.text();
         if (errorText == "Логин занят!") {
