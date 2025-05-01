@@ -68,29 +68,17 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, login , password }) // Без confirmPassword!
+        body: JSON.stringify({ email, login , password })
     });
 
     if (response.ok) {
-        const realForm = document.createElement('form');
-        realForm.method = 'POST';
-        realForm.action = '/login';
-
-        const usernameField = document.createElement('input');
-        usernameField.type = 'hidden';
-        usernameField.name = 'username';
-        usernameField.value = login;
-
-        const passwordField = document.createElement('input');
-        passwordField.type = 'hidden';
-        passwordField.name = 'password';
-        passwordField.value = password;
-
-        realForm.appendChild(usernameField);
-        realForm.appendChild(passwordField);
-
-        document.body.appendChild(realForm);
-        realForm.submit();
+        const response2 = await fetch('http://localhost:8080/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ login , password })
+        });
     } else {
         const errorText = await response.text();
         if (errorText == "Логин занят!") {
