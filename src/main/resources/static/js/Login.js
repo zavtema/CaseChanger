@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Получаем CSRF-токен из исходной формы
-        const csrfToken = document.querySelector('input[name="_csrf"]').value;  // Thymeleaf автоматически добавит CSRF-токен
+        const csrfToken = document.querySelector('input[name="_csrf"]').value;
 
         // Отправляем данные через fetch с CSRF-токеном
         fetch('/login', {
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: `username=${encodeURIComponent(login)}&password=${encodeURIComponent(password)}&_csrf=${encodeURIComponent(csrfToken)}` // Thymeleaf автоматически добавит CSRF-токен
+            body: `username=${encodeURIComponent(login)}&password=${encodeURIComponent(password)}&_csrf=${encodeURIComponent(csrfToken)}`
         })
         .then(response => {
             if (response.redirected) {
