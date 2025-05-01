@@ -18,6 +18,11 @@
         </div>
         <div th:if="${#authorization.expression('isAuthenticated()')}">
           <a href="/profile"><span th:text="${#authentication.name}">username</span></a>
+
+          <form th:action="@{/logout}" method="post" class="logout-form"> // добавил тебе, поправь (тут вроде уже с csrf)
+            <button type="submit" class="logout-btn">Выйти</button>
+          </form>
+
         </div>
       </nav>
     </div>

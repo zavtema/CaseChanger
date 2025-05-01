@@ -2,28 +2,26 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход - CaseChanger</title>
     <link rel="stylesheet" href="/css/Authorization.css">
-    <script src="/js/Login.js"></script> <!-- подключаем правильный скрипт -->
 </head>
 <body>
 <div class="auth-container">
     <h1>Вход в CaseChanger</h1>
-    <form id="loginForm" method="post" action="/login">
+    <form id="loginForm" method="post" th:action="@{/login}">
+        <!-- Thymeleaf автоматически добавит CSRF-токен -->
         <div class="input-group">
             <input type="text" id="login" name="username" placeholder="Username">
             <div class="error" id="loginError"></div>
         </div>
-
         <div class="input-group">
             <input type="password" id="password" name="password" placeholder="Password">
             <div class="error" id="passwordError"></div>
         </div>
-
         <button type="submit" class="btn">Войти</button>
     </form>
     <p>Нет аккаунта? <a href="/register">Зарегистрироваться</a></p>
 </div>
+<script src="/js/Login.js"></script>
 </body>
 </html>

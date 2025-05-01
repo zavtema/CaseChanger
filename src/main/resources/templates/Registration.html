@@ -10,7 +10,8 @@
 <body>
     <div class="auth-container">
         <h1>Регистрация в CaseChanger</h1>
-        <form id="registerForm">
+        <form id="registerForm" method="post" th:action="@{/register}"> // <!-- Это поменял (csrf) -->
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> // <!-- Это поменял (csrf) -->
             <div class="input-group">
                 <input type="text" id="login" name="login" placeholder="Username">
                 <div class="error" id="loginError"></div>
