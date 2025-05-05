@@ -2,155 +2,82 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Профиль</title>
+  <title>CaseChanger - Профиль</title>
+  <link rel="stylesheet" th:href="@{/css/Profile.css}">
   <link rel="stylesheet" th:href="@{/css/HomePage.css}">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: sans-serif;
-      background-color: #121212;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    main {
-      flex: 1;
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 2rem;
-      text-align: center;
-    }
-
-    section {
-      background-color: #1f1f1f;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 0 10px rgba(0, 255, 198, 0.2);
-    }
-
-    section h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      border-bottom: 1px solid #00ffc6;
-      padding-bottom: 0.5rem;
-    }
-
-    .danger {
-      background-color: #2e1a1a;
-      border: 1px solid #ff4d4d;
-    }
-
-    button {
-      margin-top: 1rem;
-      padding: 0.6rem 1rem;
-      background-color: #00ffc6;
-      color: black;
-      font-weight: bold;
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background-color: #00d8aa;
-    }
-
-    ul {
-      list-style: none;
-      margin-top: 1rem;
-      padding-left: 1rem;
-    }
-
-    ul li {
-      padding: 0.3rem 0;
-      border-bottom: 1px solid #333;
-    }
-
-    input, select {
-      width: 100%;
-      margin-top: 0.5rem;
-      padding: 0.5rem;
-      border-radius: 0.5rem;
-      border: none;
-      background-color: #2a2a2a;
-      color: #fff;
-    }
-
-    label {
-      margin-top: 1rem;
-      display: block;
-      font-weight: bold;
-    }
-
-  </style>
 </head>
 <body>
-
-<div th:replace="Header & footer :: siteHeader"></div>
-
+<div th:replace="~{Header & footer :: siteHeader}"></div>
 <main>
-  <h1>Профиль пользователя</h1>
-
-  <section>
-    <h2>Настройки сайта</h2>
-    <label for="theme">Тема:</label>
-    <select id="theme">
-      <option value="dark">Тёмная</option>
-      <option value="light">Светлая</option>
-    </select>
-
-    <label for="lang">Язык:</label>
-    <select id="lang">
-      <option value="ru">Русский</option>
-      <option value="en">English</option>
-    </select>
-
-    <button>Сохранить настройки</button>
+  <section class="profile reveal">
+    <div class="avatar"></div>
+    <div class="info">
+      <div class="profile-header">
+        <span class="username" th:text="${#authentication.name}">username</span>
+        <form th:action="@{/logout}" method="post" class="logout-form">
+          <button type="submit" class="logout-btn">Выйти</button>
+        </form>
+      </div>
+      <div class="trade-url-form">
+        <label>Trade URL:</label>
+        <div class="input-wrapper">
+          <input type="text" value="https://steamcommunity.com/tradeoffer/new/?partner=1174492404&token=51lhfebH" />
+        </div>
+      </div>
+      <div class="trade-url-form">
+        <label>Email:</label>
+        <div class="input-wrapper">
+          <input type="email" value="zasimovandrey2000@gmail.com">
+          <button class="btn-edit">Сохранить</button>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <section>
-    <h2>Настройки аккаунта</h2>
-    <label for="email">Email:</label>
-    <input type="email" id="email" placeholder="your@email.com">
-
-    <label for="password">Новый пароль:</label>
-    <input type="password" id="password" placeholder="Введите новый пароль">
-
-    <button>Обновить аккаунт</button>
+  <section class="tabs reveal">
+    <button class="active">💰 Транзакции</button>
+    <button>📦 Инвентарь</button>
+    <button>🔗 Реферальная программа</button>
   </section>
 
-  <section>
-    <h2>История обменов</h2>
-    <ul>
-      <li>28.04.2025 — Обмен #13245 — 1 кейс CS2 на 300₽</li>
-      <li>25.04.2025 — Обмен #13111 — 3 кейса CS2 на 850₽</li>
-      <li>22.04.2025 — Обмен #12998 — 2 кейса CS2 на 500₽</li>
-      <!-- Можно добавить Thymeleaf-перебор -->
-    </ul>
-  </section>
-
-  <section class="danger">
-    <h2>Удаление аккаунта</h2>
-    <p>Удаление аккаунта необратимо. Все данные будут удалены.</p>
-    <button style="background-color:#ff4d4d; color:white;">Удалить аккаунт</button>
+  <section class="transactions reveal">
+    <h3>История обменов</h3>
+    <div class="filters">
+      <input type="text" placeholder="Дата обмена">
+      <input type="text" placeholder="Название основного скина">
+    </div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Дата</th>
+          <th>Статус</th>
+          <th>Сумма</th>
+          <th>Вы получили</th>
+          <th>Вы отдали</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td colspan="6">Пока обменов не было совершенно</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 </main>
+<div th:replace="~{Header & footer :: siteFooter}"></div>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        entry.target.classList.toggle('visible', entry.isIntersecting);
+      });
+    }, { threshold: 0.1 });
 
-<div th:replace="Header & footer :: siteFooter"></div>
-
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  });
+</script>
 </body>
 </html>

@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<div th:replace="Header & footer :: siteHeader"></div>
+<div th:replace="~{Header & footer :: siteHeader}"></div>
 
 <section class="hero">
     <div class="container reveal">
@@ -50,7 +50,7 @@
     </div>
 </section>
 
-<div th:replace="Header & footer :: siteFooter"></div>
+<div th:replace="~{Header & footer :: siteFooter}"></div>
 
 </body>
 </html>
