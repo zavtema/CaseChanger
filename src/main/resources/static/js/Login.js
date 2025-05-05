@@ -1,10 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
+
     const loginForm = document.getElementById('loginForm');
     const loginInput = document.getElementById('login');
     const passwordInput = document.getElementById('password');
     const loginError = document.getElementById('loginError');
     const passwordError = document.getElementById('passwordError');
     const urlParams = new URLSearchParams(window.location.search);
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const csrfParam = document.querySelector('meta[name="_csrf_parameter"]').getAttribute('content');
 
     if (urlParams.has('error')) {
         loginInput.classList.add('error-input');
@@ -20,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         passwordInput.classList.remove('error-input');
         passwordError.classList.remove('show');
         passwordError.textContent = '';
-    });
+    })
 
     passwordInput.addEventListener('input', function() {
         loginInput.classList.remove('error-input');
@@ -29,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         passwordInput.classList.remove('error-input');
         passwordError.classList.remove('show');
         passwordError.textContent = '';
-    });
+    })
 
     loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -37,7 +40,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const login = loginInput.value.trim();
         const password = passwordInput.value.trim();
 
-        // Валидация
         if (login == "") {
             loginInput.classList.add('error-input');
             loginError.classList.add('show');
@@ -67,29 +69,31 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Получаем CSRF-токен из исходной формы
-        const csrfToken = document.querySelector('input[name="_csrf"]').value;
+        // Реальная отправка формы
+        const realForm = document.createElement('form');
+        realForm.method = 'POST';
+        realForm.action = '/login';
 
-        // Отправляем данные через fetch с CSRF-токеном
-        fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `username=${encodeURIComponent(login)}&password=${encodeURIComponent(password)}&_csrf=${encodeURIComponent(csrfToken)}`
-        })
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url; // Редирект на страницу после успешного входа
-            } else if (!response.ok) {
-                throw new Error('Ошибка авторизации');
-            }
-        })
-        .catch(error => {
-            loginInput.classList.add('error-input');
-            passwordInput.classList.add('error-input');
-            passwordError.classList.add('show');
-            passwordError.textContent = 'Неверный логин или пароль';
-        });
+        const usernameField = document.createElement('input');
+        usernameField.type = 'hidden';
+        usernameField.name = 'username';
+        usernameField.value = login;
+
+        const passwordField = document.createElement('input');
+        passwordField.type = 'hidden';
+        passwordField.name = 'password';
+        passwordField.value = password;
+
+        const csrfField = document.createElement('input');
+        csrfField.type = 'hidden';
+        csrfField.name = csrfParam;
+        csrfField.value = csrfToken;
+
+        realForm.appendChild(usernameField);
+        realForm.appendChild(passwordField);
+        realForm.appendChild(csrfField);
+
+        document.body.appendChild(realForm);
+        realForm.submit();
     });
 });

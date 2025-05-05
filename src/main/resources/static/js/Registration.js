@@ -5,6 +5,8 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const csrfParam = document.querySelector('meta[name="_csrf_parameter"]').getAttribute('content');
 
     if (login == "") {
         document.getElementById('login').classList.add('error-input');
@@ -66,19 +68,38 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     const response = await fetch('http://localhost:8080/api/users/register', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            [csrfParam]: csrfToken
         },
         body: JSON.stringify({ email, login , password })
     });
 
     if (response.ok) {
-        const response2 = await fetch('http://localhost:8080/api/users/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ login , password })
-        });
+        const realForm = document.createElement('form');
+        realForm.method = 'POST';
+        realForm.action = '/login';
+
+        const usernameField = document.createElement('input');
+        usernameField.type = 'hidden';
+        usernameField.name = 'username';
+        usernameField.value = login;
+
+        const passwordField = document.createElement('input');
+        passwordField.type = 'hidden';
+        passwordField.name = 'password';
+        passwordField.value = password;
+
+        const csrfField = document.createElement('input');
+        csrfField.type = 'hidden';
+        csrfField.name = csrfParam;
+        csrfField.value = csrfToken;
+
+        realForm.appendChild(usernameField);
+        realForm.appendChild(passwordField);
+        realForm.appendChild(csrfField);
+
+        document.body.appendChild(realForm);
+        realForm.submit();
     } else {
         const errorText = await response.text();
         if (errorText == "Логин занят!") {
