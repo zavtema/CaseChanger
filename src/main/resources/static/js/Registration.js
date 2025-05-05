@@ -1,139 +1,117 @@
 document.getElementById('registerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    const login = document.getElementById('login').value;
-    const email = document.getElementById('email').value;
+    // Получаем значения полей
+    const login = document.getElementById('login').value.trim();
+    const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
-    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    const csrfParam = document.querySelector('meta[name="_csrf_parameter"]').getAttribute('content');
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
 
-    if (login == "") {
-        document.getElementById('login').classList.add('error-input');
-        document.getElementById('loginError').textContent = 'Имя не может быть пустым';
-        document.getElementById('loginError').classList.add('show');
+    // Сбрасываем предыдущие ошибки
+    resetErrors();
+
+    // Валидация логина
+    if (!login) {
+        showError('login', 'Имя не может быть пустым');
         return;
-    } else if (login.length <= 3) {
-        document.getElementById('login').classList.add('error-input');
-        document.getElementById('loginError').textContent = 'Имя должно содержать хотя бы 4 символа';
-        document.getElementById('loginError').classList.add('show');
+    } else if (login.length < 4) {
+        showError('login', 'Имя должно содержать хотя бы 4 символа');
         return;
     } else if (!/^[a-zA-Z0-9_]+$/.test(login)) {
-        document.getElementById('login').classList.add('error-input');
-        document.getElementById('loginError').textContent = 'Имя содержит недопустимые символы';
-        document.getElementById('loginError').classList.add('show');
+        showError('login', 'Имя содержит недопустимые символы');
         return;
     }
 
-    if (email == "") {
-        document.getElementById('email').classList.add('error-input');
-        document.getElementById('emailError').textContent = 'Email не может быть пустым';
-        document.getElementById('emailError').classList.add('show');
+    // Валидация email
+    if (!email) {
+        showError('email', 'Email не может быть пустым');
         return;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        document.getElementById('email').classList.add('error-input');
-        document.getElementById('emailError').textContent = 'Не верный формат почты';
-        document.getElementById('emailError').classList.add('show');
+        showError('email', 'Неверный формат почты');
         return;
     }
 
-    if (password == "") {
-        document.getElementById('password').classList.add('error-input');
-        document.getElementById('confirmPasswordError').textContent = 'Пароль не может быть пустым';
-        document.getElementById('confirmPasswordError').classList.add('show');
+    // Валидация пароля
+    if (!password) {
+        showError('password', 'Пароль не может быть пустым', 'confirmPasswordError');
         return;
-    } else if (confirmPassword == "") {
-        document.getElementById('confirmPassword').classList.add('error-input');
-        document.getElementById('confirmPasswordError').textContent = 'Пароль не может быть пустым';
-        document.getElementById('confirmPasswordError').classList.add('show');
-        return;
-    } else if (password.length <= 7) {
-        document.getElementById('password').classList.add('error-input');
-        document.getElementById('confirmPasswordError').textContent = 'Пароль должен содержать хотя бы 8 символов';
-        document.getElementById('confirmPasswordError').classList.add('show');
-        return;
-    } else if (confirmPassword.length <= 7) {
-        document.getElementById('confirmPassword').classList.add('error-input');
-        document.getElementById('confirmPasswordError').textContent = 'Пароль должен содержать хотя бы 8 символов';
-        document.getElementById('confirmPasswordError').classList.add('show');
+    } else if (password.length < 8) {
+        showError('password', 'Пароль должен содержать хотя бы 8 символов', 'confirmPasswordError');
         return;
     } else if (password !== confirmPassword) {
-        document.getElementById('password').classList.add('error-input');
-        document.getElementById('confirmPassword').classList.add('error-input');
-        document.getElementById('confirmPasswordError').textContent = 'Пароли не совпадают';
-        document.getElementById('confirmPasswordError').classList.add('show');
+        showError('confirmPassword', 'Пароли не совпадают', 'confirmPasswordError');
         return;
     }
 
-    const response = await fetch('http://localhost:8080/api/users/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            [csrfParam]: csrfToken
-        },
-        body: JSON.stringify({ email, login , password })
-    });
+    try {
+        // Отправка данных на сервер
+        const response = await fetch('/api/users/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+                email,
+                login,
+                password
+            })
+        });
 
-    if (response.ok) {
-        const realForm = document.createElement('form');
-        realForm.method = 'POST';
-        realForm.action = '/login';
-
-        const usernameField = document.createElement('input');
-        usernameField.type = 'hidden';
-        usernameField.name = 'username';
-        usernameField.value = login;
-
-        const passwordField = document.createElement('input');
-        passwordField.type = 'hidden';
-        passwordField.name = 'password';
-        passwordField.value = password;
-
-        const csrfField = document.createElement('input');
-        csrfField.type = 'hidden';
-        csrfField.name = csrfParam;
-        csrfField.value = csrfToken;
-
-        realForm.appendChild(usernameField);
-        realForm.appendChild(passwordField);
-        realForm.appendChild(csrfField);
-
-        document.body.appendChild(realForm);
-        realForm.submit();
-    } else {
-        const errorText = await response.text();
-        if (errorText == "Логин занят!") {
-            document.getElementById('login').classList.add('error-input');
-            document.getElementById('loginError').textContent = 'Пользователь с таким именем уже существует';
-            document.getElementById('loginError').classList.add('show');
-            return;
-        } else if (errorText == "Email занят!") {
-            document.getElementById('email').classList.add('error-input');
-            document.getElementById('emailError').textContent = 'Email занят';
-            document.getElementById('emailError').classList.add('show');
-            return;
+        if (response.ok) {
+            // Перенаправление после успешной регистрации
+            window.location.href = '/login?registered=true';
+        } else {
+            const errorText = await response.text();
+            handleServerError(errorText);
         }
+    } catch (error) {
+        console.error('Ошибка при отправке формы:', error);
+        showError('confirmPassword', 'Произошла ошибка при отправке формы', 'confirmPasswordError');
     }
 });
 
-document.getElementById('password').addEventListener('input', function() {
-    document.getElementById('password').classList.remove('error-input');
-    document.getElementById('confirmPassword').classList.remove('error-input');
-    document.getElementById('confirmPasswordError').innerText = ""
-})
+// Вспомогательные функции
+function showError(fieldId, message, errorContainerId = null) {
+    const field = document.getElementById(fieldId);
+    const errorElement = errorContainerId ?
+        document.getElementById(errorContainerId) :
+        document.getElementById(`${fieldId}Error`);
 
-document.getElementById('confirmPassword').addEventListener('input', function() {
-    document.getElementById('password').classList.remove('error-input');
-    document.getElementById('confirmPassword').classList.remove('error-input');
-    document.getElementById('confirmPasswordError').innerText = ""
-})
+    field.classList.add('error-input');
+    errorElement.textContent = message;
+    errorElement.classList.add('show');
+}
 
-document.getElementById('login').addEventListener('input', function() {
-    document.getElementById('login').classList.remove('error-input');
-    document.getElementById('loginError').innerText = ""
-})
+function resetErrors() {
+    const errorElements = document.querySelectorAll('.error');
+    const inputElements = document.querySelectorAll('.error-input');
 
-document.getElementById('email').addEventListener('input', function() {
-    document.getElementById('email').classList.remove('error-input');
-    document.getElementById('emailError').innerText = ""
-})
+    errorElements.forEach(el => {
+        el.textContent = '';
+        el.classList.remove('show');
+    });
+
+    inputElements.forEach(el => el.classList.remove('error-input'));
+}
+
+function handleServerError(errorText) {
+    if (errorText.includes("Логин занят")) {
+        showError('login', 'Пользователь с таким именем уже существует');
+    } else if (errorText.includes("Email занят")) {
+        showError('email', 'Email уже используется');
+    } else {
+        showError('confirmPassword', 'Ошибка сервера: ' + errorText, 'confirmPasswordError');
+    }
+}
+
+// Обработчики событий для сброса ошибок при вводе
+['login', 'email', 'password', 'confirmPassword'].forEach(fieldId => {
+    document.getElementById(fieldId).addEventListener('input', function() {
+        this.classList.remove('error-input');
+        const errorId = fieldId === 'password' || fieldId === 'confirmPassword' ?
+            'confirmPasswordError' : `${fieldId}Error`;
+        document.getElementById(errorId).textContent = '';
+    });
+});
