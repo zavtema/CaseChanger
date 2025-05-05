@@ -144,3 +144,7 @@ body {
     opacity: 0;
     transform: translateY(-50px);
 }
+
+.auth-container.no-animation {
+    animation: none !important;
+}

@@ -10,7 +10,7 @@
     <script src="/js/Login.js"></script> <!-- подключаем правильный скрипт -->
 </head>
 <body>
-<div class="auth-container">
+<div class="auth-container" th:classappend="${param.error} ? 'no-animation'">
     <h1>Вход в CaseChanger</h1>
     <form id="loginForm" method="post" action="/login">
         <div class="input-group">
