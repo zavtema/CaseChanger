@@ -51,7 +51,7 @@ public class SecurityConfig {
     public FilterRegistrationBean<RateLimitingFilter> rateLimitingFilter(RateLimitingFilter filter) { // Регистрация фильтра в Spring
         FilterRegistrationBean<RateLimitingFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(filter);  // устанавливаем, что все запросы, которые приходят в приложение должны быть пропущены через фильтр
-        registrationBean.addUrlPatterns("/*"); // Защищаем все пути
+        registrationBean.addUrlPatterns("/login", "/register"); // Защищаем все пути
         registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE + 100); // Устанавливаем порядок фильтра
         return registrationBean; // регистрация фильтра, чтобы Spring знал о нем и применял его
     }
