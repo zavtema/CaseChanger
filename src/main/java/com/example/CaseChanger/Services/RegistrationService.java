@@ -14,7 +14,11 @@ import org.springframework.stereotype.Service;
 public class RegistrationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    public void register(User user) {
+    private final RecaptchaService recaptchaService;
+    public void register(User user, String recaptchaToken) {
+        if (!recaptchaService.verify(recaptchaToken,"register")) {
+            throw new IllegalArgumentException("CAPTCHA не пройдена");
+        }
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("Email занят!");
         }

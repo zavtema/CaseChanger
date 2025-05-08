@@ -1,5 +1,6 @@
 package com.example.CaseChanger.Controllers;
 
+import com.example.CaseChanger.CaptchaDTO.RegistrationDTO;
 import com.example.CaseChanger.Models.User;
 import com.example.CaseChanger.Services.RegistrationService;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegistrationController {
     private final RegistrationService userService;
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
+    public ResponseEntity<String> register(@RequestBody RegistrationDTO dto) {
         try {
-            userService.register(user);
+            User user = new User();
+            user.setLogin(dto.getLogin());
+            user.setEmail(dto.getEmail());
+            user.setPassword(dto.getPassword());
+            userService.register(user, dto.getRecaptchaToken());
             return ResponseEntity.ok("Регистрация прошла успешно!");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService implements UserDetailsService {
     private final UserRepository userRepository;
+    private final RecaptchaService recaptchaService;
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
@@ -23,5 +24,11 @@ public class AuthService implements UserDetailsService {
                 .password(user.getPassword())
                 .roles("USER") // <-- добавил, чтобы были роли
                 .build();
+    }
+
+    public void verifyCaptcha(String token) {
+        if (!recaptchaService.verify(token, "login")) {
+            throw new IllegalArgumentException("CAPTCHA failed");
+        }
     }
 }

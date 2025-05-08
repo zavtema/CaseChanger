@@ -129,6 +129,9 @@ return "redirect:/admin"; // Перенаправление на другую с
 - **EntityManager** — основной API для работы с JPA сущностями.
 - **FetchType.LAZY/EAGER** — стратегия загрузки связанных сущностей.
 - **CascadeType.ALL** — каскад всех операций (persist, merge, remove и т.д.).
+- **ObjectMapper** — это класс из библиотеки Jackson, который умеет:
+читать JSON и превращать его в Java-объекты (Map, классы и т.д.)
+и наоборот — превращать Java-объекты в JSON.
 
 ---
 
