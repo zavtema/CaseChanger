@@ -1,225 +1,50 @@
-input,
-button,
-select,
-textarea,
-.profile,
-.tabs button,
-.trade-url-form,
-.input-wrapper,
-table,
-.filters input {
-  border-radius: 10px;
-}
-
+/* Профиль пользователя */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #0F0F0F;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #0F0F0F;
+  color: #CCCCCC;
 }
 
 main {
-    padding-top: 140px;
-    max-width: 1000px;
-    margin: 0 auto;
+  padding: 140px 20px 40px; /* отступ сверху под header + боковые */
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
-.breadcrumb {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 10px;
-}
-
-.page-title {
-    font-size: 28px;
-    color: #00FFC6;
-    margin-bottom: 30px;
-}
-
+/* Секция «Профиль» */
 .profile {
-    display: flex;
-    gap: 20px;
-    background-color: #1A1A1A;
-    padding: 20px;
-    margin-bottom: 20px;
+  display: flex;
+  gap: 20px;
+  background-color: #1A1A1A;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,255,198,0.1);
+  margin-bottom: 20px;
 }
+
 .avatar {
-    width: 80px;
-    height: 80px;
-    background-color: #333;
-    border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  background-color: #333;
+  border-radius: 50%;
 }
+
 .info {
-    width: 90%;
-}
-
-.info h2 {
-    margin: 0;
-    margin-bottom: 10px;
-}
-.info label {
-    display: block;
-    margin-top: 10px;
-    font-size: 14px;
-}
-.info input {
-    width: 100%;
-    background-color: #202020;
-    color: #CCCCCC;
-    border: none;
-    padding: 8px;
-    margin-top: 4px;
-}
-.profile-actions {
-    margin-top: 10px;
-}
-.profile-actions button {
-    margin-right: 10px;
-    background-color: #00FFC6;
-    color: #0F0F0F;
-    border: none;
-    padding: 6px 12px;
-    cursor: pointer;
-}
-
-.tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-.tabs button {
-    background-color: #202020;
-    color: #CCCCCC;
-    border: none;
-    padding: 10px 16px;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-}
-.tabs button.active, .tabs button:hover {
-    border-color: #00FFC6;
-    color: #00FFC6;
-}
-
-.transactions h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-}
-.filters {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-.filters input {
-    color: rgb(204, 204, 204);
-    flex: 1;
-    padding: 8px;
-    background-color: #1f1f1f;
-    border: 1px solid #444;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #1A1A1A;
-}
-table th, table td {
-    padding: 10px;
-    border: 1px solid #444;
-    text-align: left;
-}
-table th {
-    background-color: #202020;
-}
-
-
-.trade-url-form {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 20px;
-  width: 100%;
-}
-
-.trade-url-form label {
-  white-space: nowrap;
-  margin-right: 10px;
-  margin-left: 10px;
-  color: #CCCCCC;
-  min-width: 100px;
-}
-
-.trade-url-form input {
-  flex: 1 1 0;
-  padding: 10px;
-  border: 1px solid #444;
-  background-color: #1f1f1f;
-  color: #CCCCCC;
-  min-width: 0;
-  max-width: 81%;
-}
-
-.trade-url-form button {
-  padding: 10px 20px;
-  background-color: #ff2e63;
-  border: none;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s;
-  white-space: nowrap;
-  width: 120px;
-  height: 37px;
-  margin-top: 4px;
-}
-
-.trade-url-form button:hover {
-  background-color: #e6004c;
-}
-
-.input-wrapper {
-  display: flex;
   flex: 1;
-  max-width: 100%;
-  width: 100%;
-  gap: 10px;
-}
-
-.input-wrapper input {
-  flex: 1;
-  min-width: 0;
-  padding: 10px;
-  border: 1px solid #444;
-  background-color: #1f1f1f;
-  color: #CCCCCC;
-}
-
-.input-wrapper button {
-  padding: 10px 20px;
-  border: none;
-  background-color: #ff2e63;
-  color: white;
-  cursor: pointer;
-  width: 120px;
 }
 
 .profile-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  padding: 0 10px;
+  margin-bottom: 20px;
 }
 
 .username {
   font-size: 24px;
   font-weight: bold;
-  color: #00ffc6;
+  color: #00FFC6;
 }
 
 .logout-form {
@@ -228,51 +53,208 @@ table th {
 
 .logout-btn {
   padding: 8px 16px;
-  background-color: #ff2e63;
-  color: white;
+  background-color: #FF2E63;
+  color: #FFF;
   border: none;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(255,46,99,0.3);
+  transition: background 0.3s, transform 0.1s;
 }
+.logout-btn:hover { background-color: #E6004C; transform: scale(1.05); }
+.logout-btn:active { transform: scale(0.97); }
 
-.logout-btn:hover {
-  background-color: #e6004c;
-}
-
-/* 1. Обёртка с единой рамкой и скруглением */
-.table-wrapper {
-  border: 2px solid #333;    /* внешняя рамка */
-  border-radius: 10px;        /* скруглённые углы */
-  overflow: hidden;          /* чтобы содержимое не выступало за рамку */
+/* Формы Trade URL и Email */
+.trade-url-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
-/* 2. Таблица внутри без внешних рамок */
-.table-wrapper table {
-  width: 100%;
-  border-collapse: collapse; /* можно collapse, но без border на table */
-  border-spacing: 0;         /* на всякий случай */
+.trade-url-form label {
+  min-width: 100px;
+  color: #CCCCCC;
 }
 
-/* 3. Ячейки без своей рамки */
+.input-wrapper {
+  flex: 1;
+  display: flex;
+  gap: 10px;
+}
+
+.input-wrapper input {
+  flex: 1;
+  padding: 8px;
+  background: #1F1F1F;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: #CCCCCC;
+}
+
+.btn-edit {
+  padding: 8px 16px;
+  background-color: #FF2E63;
+  color: #FFF;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(255,46,99,0.3);
+  transition: background 0.3s, transform 0.1s;
+}
+.btn-edit:hover { background-color: #E6004C; transform: scale(1.05); }
+.btn-edit:active { transform: scale(0.97); }
+
+/* Вкладки */
+.tabs {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  color: #CCCCCC;
+  padding: 10px 16px 8px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: color 0.3s;
+}
+
+.tabs button.active,
+.tabs button:hover {
+  color: #00FFC6;
+}
+
+/* Индикатор активной вкладки */
+.tabs-indicator {
+  position: absolute;
+  bottom: 0;
+  height: 3px;
+  background: #00FFC6;
+  border-radius: 2px;
+  transition: left 0.3s, width 0.3s;
+}
+
+/* Фильтры в «Истории обменов» */
+.filters {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.filters input {
+  flex: 1;
+  padding: 8px;
+  background: #1F1F1F;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: #CCCCCC;
+}
+
+/* Таблицы */
+.table-wrapper {
+  border: 2px solid #333;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
 .table-wrapper th,
 .table-wrapper td {
-  border: none;
   padding: 10px;
   text-align: left;
 }
 
-/* 4. Внутренние горизонтальные разделители */
-.table-wrapper tr + tr td {
+.table-wrapper td {
   border-top: 1px solid #333;
 }
 
-/* 5. Фон заголовка */
 .table-wrapper th {
-  background-color: #202020;
+  background: #202020;
 }
 
-/* Если нужна чёткая линия под заголовком */
-.table-wrapper thead tr + tr th {
-  border-top: 1px solid #333;
+/* Баннер в рефералке */
+.banner {
+  color: #0F0F0F;
+  border-radius: 10px;
+  margin: 2rem 0;
+}
+
+.banner h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+  color: #00FFC6;
+}
+
+.banner label {
+  display: block;
+  margin: 0 0 1rem;
+  color: #CCCCCC;
+  font-size: 0.9rem;
+}
+
+.banner .divider {
+  border: none;
+  height: 1px;
+  background: #444;
+  margin: 0;
+}
+
+/* Поле реферальной ссылки */
+.referral-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.referral-link label {
+  color: #CCCCCC;
+  min-width: 140px;
+}
+
+.referral-link input {
+  flex: 1;
+  padding: 8px;
+  background: #1F1F1F;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: #CCCCCC;
+}
+
+.btn-copy {
+  padding: 8px 16px;
+  background: #FF2E63;
+  color: #FFF;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(255,46,99,0.3);
+  transition: background 0.3s, transform 0.1s;
+}
+.btn-copy:hover { background-color: #E6004C; transform: scale(1.05); }
+.btn-copy:active { transform: scale(0.97); }
+
+.styled-date {
+  padding: 8px;
+  background: #1A1A1A;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #CCCCCC;
+  font-size: 1rem;
+}
+
+/* Убираем стрелки в Chrome/Edge */
+.styled-date::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* сделает иконку календаря светлой */
 }

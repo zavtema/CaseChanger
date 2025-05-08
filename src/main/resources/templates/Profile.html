@@ -2,9 +2,10 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>CaseChanger - Профиль</title>
+  <title>Профиль - CaseChanger</title>
   <link rel="stylesheet" th:href="@{/css/Profile.css}">
   <link rel="stylesheet" th:href="@{/css/HomePage.css}">
+  <script src="/js/Profile.js"></script>
 </head>
 <body>
 <div th:replace="~{Header & footer :: siteHeader}"></div>
@@ -21,13 +22,13 @@
       <div class="trade-url-form">
         <label>Trade URL:</label>
         <div class="input-wrapper">
-          <input type="text" value="https://steamcommunity.com/tradeoffer/new/?partner=1174492404&token=51lhfebH" />
+          <input type="text" value="" placeholder="Введите трейд ссылку"/>
         </div>
       </div>
       <div class="trade-url-form">
         <label>Email:</label>
         <div class="input-wrapper">
-          <input type="email" value="zasimovandrey2000@gmail.com">
+          <input type="email" value="" placeholder="Введите почту">
           <button class="btn-edit">Сохранить</button>
         </div>
       </div>
@@ -35,49 +36,73 @@
   </section>
 
   <section class="tabs reveal">
-    <button class="active">💰 Транзакции</button>
-    <button>📦 Инвентарь</button>
-    <button>🔗 Реферальная программа</button>
+    <button class="active" data-tab="transactions">💰 История обменов</button>
+    <button data-tab="referral">🔗 Реферальная программа</button>
   </section>
 
-  <section class="transactions reveal">
-    <h3>История обменов</h3>
-    <div class="filters">
-      <input type="text" placeholder="Дата обмена">
-      <input type="text" placeholder="Название основного скина">
-    </div>
-    <div class="table-wrapper">
-      <table>
-        <thead>
-        <tr>
-          <th>ID</th>
-          <th>Дата</th>
-          <th>Статус</th>
-          <th>Сумма</th>
-          <th>Вы получили</th>
-          <th>Вы отдали</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td colspan="6">Пока обменов не было совершенно</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
+  <div class="tab-contents">
+    <section id="transactions" class="transactions reveal tab-content" style="display:none;">
+      <h3>История обменов</h3>
+      <div class="filters">
+        <input type="date" class="styled-date">
+        <input type="text" placeholder="Название основного скина">
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Дата</th>
+            <th>Статус</th>
+            <th>Сумма</th>
+            <th>Вы получили</th>
+            <th>Вы отдали</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td colspan="6">Пока обменов не было совершенно</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="referral" class="referral reveal tab-content" style="display:none;">
+      <!-- Баннер- призыв -->
+      <div class="banner">
+        <h1>Приводи друга и получай бесплатное открытие кейса!</h1>
+        <label>Вы будете получать бесплатные открытия кейсов за каждые 5 совершенных обменов друзьями.</label>
+        <hr class="divider">
+      </div>
+
+      <!-- Поле с реферальной ссылкой -->
+      <div class="referral-link">
+        <label for="refLink">Ваша реферальная ссылка:</label>
+        <input id="refLink" type="text"
+               value="https://casechanger.ru/ref?code=ABC123"
+               readonly>
+        <button id="copyBtn" class="btn-copy">Скопировать</button>
+      </div>
+
+      <!-- Таблица приглашённых пользователей -->
+      <div class="table-wrapper" style="margin-top:20px;">
+        <table>
+          <thead>
+          <tr>
+            <th>Пользователь</th>
+            <th>Дата регистрации</th>
+            <th>Количество обменов</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr><td colspan="3">Пока нет приглашённых пользователей</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
 </main>
 <div th:replace="~{Header & footer :: siteFooter}"></div>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        entry.target.classList.toggle('visible', entry.isIntersecting);
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  });
-</script>
 </body>
 </html>
