@@ -9,6 +9,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
     const csrfParam = document.querySelector('meta[name="_csrf_parameter"]').getAttribute('content');
 
+    grecaptcha.ready(() => {
+        grecaptcha.execute('6Ld11jIrAAAAAMUoUlb7feesE9uDp4ASpCHqbEG2', { action: 'login' })
+            .then(token => {
+                document.getElementById('recaptchaToken').value = token;
+            });
+    });
+
     if (urlParams.has('error')) {
         loginInput.classList.add('error-input');
         passwordInput.classList.add('error-input');
@@ -39,6 +46,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const login = loginInput.value.trim();
         const password = passwordInput.value.trim();
+
+        grecaptcha.ready(() => {
+            grecaptcha.execute('6Ld11jIrAAAAAMUoUlb7feesE9uDp4ASpCHqbEG2', { action: 'login' })
+                .then(token => {
+                    document.getElementById('recaptchaToken').value = token;
+                });
+        });
 
         if (login == "") {
             loginInput.classList.add('error-input');

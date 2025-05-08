@@ -8,6 +8,7 @@
     <title>Вход - CaseChanger</title>
     <link rel="stylesheet" href="/css/Authorization.css">
     <script src="/js/Login.js"></script> <!-- подключаем правильный скрипт -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6Ld11jIrAAAAAMUoUlb7feesE9uDp4ASpCHqbEG2"></script>
 </head>
 <body>
 <div class="auth-container" th:classappend="${param.error} ? 'no-animation'">
@@ -22,6 +23,8 @@
             <input type="password" id="password" name="password" placeholder="Password">
             <div class="error" id="passwordError"></div>
         </div>
+
+        <input type="hidden" name="recaptchaToken" id="recaptchaToken">
 
         <button type="submit" class="btn">Войти</button>
     </form>
