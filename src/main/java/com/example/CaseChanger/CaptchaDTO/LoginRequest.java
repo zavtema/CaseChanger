@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class LoginRequest {
-    private String login;
+    private String username;
     private String password;
     private String recaptchaToken;
 }

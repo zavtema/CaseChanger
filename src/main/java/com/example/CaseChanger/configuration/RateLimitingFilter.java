@@ -92,7 +92,7 @@ public class RateLimitingFilter extends OncePerRequestFilter {
                     if (ipCount != null && ipCount > 3) {
                         Set<String> allIps = redisTemplate.opsForSet().members(ipSetKey);
                         for (String suspiciousIp : allIps) {
-                            redisTemplate.opsForValue().set("block:" + suspiciousIp, "1", Duration.ofMinutes(20));
+                            redisTemplate.opsForValue().set("ratelimit:block:" + suspiciousIp, "1", Duration.ofMinutes(20));
                             logger.info("Заблокирован IP из-за подозрительной активности: " + suspiciousIp);
                         }
                         response.setStatus(HttpStatus.FORBIDDEN.value());
