@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Реальная отправка формы
         const realForm = document.createElement('form');
         realForm.method = 'POST';
-        realForm.action = '/login';
+        realForm.action = '/api/users/login';
 
         const usernameField = document.createElement('input');
         usernameField.type = 'hidden';

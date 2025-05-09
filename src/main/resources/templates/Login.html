@@ -13,7 +13,7 @@
 <body>
 <div class="auth-container" th:classappend="${param.error} ? 'no-animation'">
     <h1>Вход в CaseChanger</h1>
-    <form id="loginForm" method="post" action="/login">
+    <form id="loginForm" method="post" action="/api/users/login">
         <div class="input-group">
             <input type="text" id="login" name="username" placeholder="Username">
             <div class="error" id="loginError"></div>
