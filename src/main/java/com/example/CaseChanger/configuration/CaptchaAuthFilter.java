@@ -13,34 +13,50 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 
-// наследуется для того, чтобы мы добавили проверку Captcha перед классической проверкой авторизации
 @AllArgsConstructor
 public class CaptchaAuthFilter extends UsernamePasswordAuthenticationFilter {
-    private final AuthService authSevice;
+    private final AuthService authService;
+
     @Override
     public Authentication attemptAuthentication(
             HttpServletRequest request,
             HttpServletResponse response
     ) throws AuthenticationException {
+        System.out.println(">>> attemptAuthentication STARTED");
+
         String token = request.getParameter("recaptchaToken");
+        System.out.println(">>> recaptchaToken = " + token); // ← вот это добавь
+
         try {
-            authSevice.verifyCaptcha(token);
+            authService.verifyCaptcha(token);
         } catch (IllegalArgumentException e) {
+            System.out.println(">>> CAPTCHA failed: " + e.getMessage()); // можно добавить для ясности
             throw new BadCredentialsException(e.getMessage());
         }
+
         return super.attemptAuthentication(request, response);
     }
-    // Ниже хрен пойми зачем добавляю
+
+
     @Override
-    protected void successfulAuthentication(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain chain,
-            Authentication authResult
-    ) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                            FilterChain chain, Authentication authResult)
+            throws IOException, ServletException {
+        // Важно: установим сессию для текущего пользователя
         super.successfulAuthentication(request, response, chain, authResult);
-        logger.info("Аутентификация успешна для пользователя: " + authResult.getName()); // Логирование
-        response.sendRedirect("/"); // Редирект на главную
+
+        // Логируем успешную аутентификацию
+        System.out.println(">>> successfulAuthentication: " + authResult.getName());
+
+        // Редирект на главную
+        response.sendRedirect("/");
     }
 
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                              AuthenticationException failed)
+            throws IOException, ServletException {
+        System.out.println(">>> unsuccessfulAuthentication: " + failed.getMessage());
+        response.sendRedirect("/login?error=true");
+    }
 }

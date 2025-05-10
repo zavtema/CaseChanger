@@ -5,31 +5,40 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final AuthService authService;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, RateLimitingFilter rateLimitingFilter) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, RateLimitingFilter rateLimitingFilter, AuthenticationManager authenticationManager) throws Exception {
 
         CaptchaAuthFilter captchaFilter = new CaptchaAuthFilter(authService);
-        captchaFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
-        captchaFilter.setFilterProcessesUrl("/api/users/login");
+        captchaFilter.setAuthenticationManager(authenticationManager);
+        captchaFilter.setFilterProcessesUrl("/api/users/login"); // путь логина
 
+        SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+        successHandler.setDefaultTargetUrl("/");
+        successHandler.setAlwaysUseDefaultTargetUrl(true); // устанавливаем переброс на нужную страницу после авторизации
 
         http
-                .addFilterBefore(rateLimitingFilter, CaptchaAuthFilter.class) // сначала RateLimitingFilter
-                .addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                )
+                .addFilterBefore(rateLimitingFilter, CaptchaAuthFilter.class)
+                .addFilterAt(captchaFilter, UsernamePasswordAuthenticationFilter.class) // заменяем стандартный логин-фильтр
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/api/users/login", "/api/users/register").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -38,7 +47,8 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
+                        .loginProcessingUrl("/api/users/login")
+                        .successHandler(successHandler)
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
@@ -51,6 +61,12 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(8);
