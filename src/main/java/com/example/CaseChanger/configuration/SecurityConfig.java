@@ -29,10 +29,6 @@ public class SecurityConfig {
         captchaFilter.setAuthenticationManager(authenticationManager);
         captchaFilter.setFilterProcessesUrl("/api/users/login"); // путь логина
 
-        SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
-        successHandler.setDefaultTargetUrl("/");
-        successHandler.setAlwaysUseDefaultTargetUrl(true); // устанавливаем переброс на нужную страницу после авторизации
-
         http
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
@@ -48,7 +44,6 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/api/users/login")
-                        .successHandler(successHandler)
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )

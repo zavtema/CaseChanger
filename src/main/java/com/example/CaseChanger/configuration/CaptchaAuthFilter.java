@@ -5,11 +5,15 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 
 import java.io.IOException;
 
@@ -40,16 +44,23 @@ public class CaptchaAuthFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                            FilterChain chain, Authentication authResult)
-            throws IOException, ServletException {
-        // Важно: установим сессию для текущего пользователя
-        super.successfulAuthentication(request, response, chain, authResult);
+                                            FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
-        // Логируем успешную аутентификацию
+        // Логируем, например:
         System.out.println(">>> successfulAuthentication: " + authResult.getName());
 
-        // Редирект на главную
-        response.sendRedirect("/");
+        SecurityContext context = SecurityContextHolder.createEmptyContext(); // создаем хранилище безопасности
+        context.setAuthentication(authResult); // кладу результат аутентификации
+        SecurityContextHolder.setContext(context); // говорю Spring Security о наличии "кастомного" хранилища
+
+        // Сохраняем в сессии
+        HttpSession session = request.getSession(true); //  Это позволяет Spring Security восстанавливать пользователя при следующих HTTP-запросах,
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context); // Даже если между ними проходит время (до выхода из сессии).
+
+        // Редирект
+        if (!response.isCommitted()) {
+            response.sendRedirect("/");
+        }
     }
 
     @Override
