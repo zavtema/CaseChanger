@@ -41,32 +41,30 @@ document.addEventListener('DOMContentLoaded', function () {
             loginInput.classList.add('error-input');
             loginError.classList.add('show');
             loginError.textContent = 'Имя не может быть пустым';
-            hasError = true;
+            return;
         } else if (login.length <= 3) {
             loginInput.classList.add('error-input');
             loginError.classList.add('show');
             loginError.textContent = 'Имя должно содержать хотя бы 4 символа';
-            hasError = true;
+            return;
         } else if (!/^[a-zA-Z0-9_]+$/.test(login)) {
             loginInput.classList.add('error-input');
             loginError.classList.add('show');
             loginError.textContent = 'Имя содержит недопустимые символы';
-            hasError = true;
+            return;
         }
 
         if (!password) {
             passwordInput.classList.add('error-input');
             passwordError.classList.add('show');
             passwordError.textContent = 'Пароль не может быть пустым';
-            hasError = true;
+            return;
         } else if (password.length <= 7) {
             passwordInput.classList.add('error-input');
             passwordError.classList.add('show');
             passwordError.textContent = 'Пароль должен содержать хотя бы 8 символов';
-            hasError = true;
+            return;
         }
-
-        if (hasError) return;
 
         grecaptcha.ready(() => {
             grecaptcha.execute('6Ld11jIrAAAAAMUoUlb7feesE9uDp4ASpCHqbEG2', { action: 'login' }).then(token => {
