@@ -22,6 +22,11 @@ public class CaptchaAuthFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthService authService;
 
     @Override
+    public void setRememberMeServices(org.springframework.security.web.authentication.RememberMeServices rememberMeServices) {
+        super.setRememberMeServices(rememberMeServices); // чтобы знал о реализации кастомного setRememberMeServices
+    }
+
+    @Override
     public Authentication attemptAuthentication(
             HttpServletRequest request,
             HttpServletResponse response
@@ -56,6 +61,8 @@ public class CaptchaAuthFilter extends UsernamePasswordAuthenticationFilter {
         // Сохраняем в сессии
         HttpSession session = request.getSession(true); //  Это позволяет Spring Security восстанавливать пользователя при следующих HTTP-запросах,
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context); // Даже если между ними проходит время (до выхода из сессии).
+
+        super.successfulAuthentication(request, response, chain, authResult);
 
         // Редирект
         if (!response.isCommitted()) {

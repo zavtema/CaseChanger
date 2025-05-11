@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const passwordInput = document.getElementById('password');
     const loginError = document.getElementById('loginError');
     const passwordError = document.getElementById('passwordError');
+    const rememberMeCheckbox = document.querySelector('input[name="remember-me"]');
+
     const urlParams = new URLSearchParams(window.location.search);
     const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
     const csrfParam = document.querySelector('meta[name="_csrf_parameter"]').getAttribute('content');
@@ -34,8 +36,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = passwordInput.value.trim();
 
         clearErrors();
-
-        let hasError = false;
 
         if (!login) {
             loginInput.classList.add('error-input');
@@ -84,6 +84,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 realForm.appendChild(createHiddenField('password', password));
                 realForm.appendChild(createHiddenField(csrfParam, csrfToken));
                 realForm.appendChild(createHiddenField('recaptchaToken', token));
+
+                // ✅ Обработка "Запомнить меня"
+                if (rememberMeCheckbox && rememberMeCheckbox.checked) {
+                    realForm.appendChild(createHiddenField('remember-me', 'on'));
+                }
 
                 document.body.appendChild(realForm);
                 realForm.submit();

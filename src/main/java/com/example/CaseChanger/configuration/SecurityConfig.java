@@ -13,6 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -22,10 +26,14 @@ public class SecurityConfig {
     private final AuthService authService;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, RateLimitingFilter rateLimitingFilter, AuthenticationManager authenticationManager) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           RateLimitingFilter rateLimitingFilter,
+                                           AuthenticationManager authenticationManager,
+                                           PersistentTokenRepository tokenRepository) throws Exception {
 
         CaptchaAuthFilter captchaFilter = new CaptchaAuthFilter(authService);
         captchaFilter.setAuthenticationManager(authenticationManager);
+        captchaFilter.setRememberMeServices(rememberMeServices(tokenRepository));
         captchaFilter.setFilterProcessesUrl("/api/users/login"); // путь логина
 
         http
@@ -46,6 +54,11 @@ public class SecurityConfig {
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
+                .rememberMe(remember -> remember
+                        .key("uniqueAndSecretKey")
+                        .tokenRepository(tokenRepository)
+                        .tokenValiditySeconds(1209600)) // время жизни токена
+
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")
@@ -60,9 +73,25 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(8);
+    }
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository(DataSource dataSource) { // PersistentTokenRepository - интерфейс для работы с куками, DataSource - интерфейс для работы с бд
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl(); // реализация интерфейса PersistentTokenRepository, хранящая токены в таблице persistent_logins
+        tokenRepository.setDataSource(dataSource); // dataSource уже содержит все данные о бд, указанные в properties
+        return tokenRepository; // возврат бин в контейнер Spring, чтобы он мог его использовать
+    }
+    @Bean
+    public org.springframework.security.web.authentication.RememberMeServices rememberMeServices(PersistentTokenRepository tokenRepository) {
+        var services = new org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices(
+                "uniqueAndSecretKey",  // должен совпадать с ключом в .rememberMe(), ключ, защищающий от злоумышленников
+                authService, // достаем из куки в браузере токен (это как бы загрузка данных пользователя для восстановления сессии)
+                tokenRepository
+        );
+        services.setTokenValiditySeconds(1209600); // 14 дней
+        return services;
     }
 }
