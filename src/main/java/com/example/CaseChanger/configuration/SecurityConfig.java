@@ -65,7 +65,6 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .userDetailsService(authService);
-
         return http.build();
     }
 
@@ -73,6 +72,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(8);
@@ -84,6 +84,7 @@ public class SecurityConfig {
         tokenRepository.setDataSource(dataSource); // dataSource уже содержит все данные о бд, указанные в properties
         return tokenRepository; // возврат бин в контейнер Spring, чтобы он мог его использовать
     }
+
     @Bean
     public org.springframework.security.web.authentication.RememberMeServices rememberMeServices(PersistentTokenRepository tokenRepository) {
         var services = new org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices(
