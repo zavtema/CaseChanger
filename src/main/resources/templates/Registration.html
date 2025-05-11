@@ -8,6 +8,7 @@
     <title>Регистрация - CaseChanger</title>
     <link rel="stylesheet" href="/css/Authorization.css">
     <script src="/js/Registration.js" defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6Ld11jIrAAAAAMUoUlb7feesE9uDp4ASpCHqbEG2"></script>
 </head>
 <body>
 <div class="auth-container">
@@ -32,6 +33,20 @@
             <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
             <div class="error" id="confirmPasswordError"></div>
         </div>
+
+        <div class="checkbox-group">
+            <label class="custom-checkbox">
+                <input type="checkbox" />
+                <span class="checkbox-box">
+                    <svg class="checkmark" viewBox="0 0 24 24">
+                        <path d="M5 13L9 17L19 7" />
+                    </svg>
+                </span>
+                <span class="checkbox-text">Запомнить меня</span>
+            </label>
+        </div>
+
+        <input type="hidden" name="recaptchaToken" id="recaptchaToken">
 
         <button type="submit" class="btn">Зарегистрироваться</button>
     </form>

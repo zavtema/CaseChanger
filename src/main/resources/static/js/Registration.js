@@ -7,6 +7,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     const confirmPassword = document.getElementById('confirmPassword').value;
     const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
     const csrfParam = document.querySelector('meta[name="_csrf_parameter"]').getAttribute('content');
+    const rememberMeCheckbox = document.querySelector('input[name="remember-me"]');
 
     if (login == "") {
         document.getElementById('login').classList.add('error-input');
@@ -65,55 +66,61 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         return;
     }
 
-    const response = await fetch('http://localhost:8080/api/users/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': csrfToken
-        },
-        body: JSON.stringify({ email, login , password })
+    grecaptcha.ready(() => {
+        grecaptcha.execute('6Ld11jIrAAAAAMUoUlb7feesE9uDp4ASpCHqbEG2', { action: 'register' }).then(async function (token) {
+            const response = await fetch('http://localhost:8080/api/users/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({ email, login, password, recaptchaToken: token })
+            });
+
+            if (response.ok) {
+                grecaptcha.ready(() => {
+                    grecaptcha.execute('6Ld11jIrAAAAAMUoUlb7feesE9uDp4ASpCHqbEG2', { action: 'login' }).then(token => {
+                        const realForm = document.createElement('form');
+                        realForm.method = 'POST';
+                        realForm.action = '/api/users/login';
+
+                        const createHiddenField = (name, value) => {
+                            const input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = name;
+                            input.value = value;
+                            return input;
+                        };
+
+                        realForm.appendChild(createHiddenField('username', login));
+                        realForm.appendChild(createHiddenField('password', password));
+                        realForm.appendChild(createHiddenField(csrfParam, csrfToken));
+                        realForm.appendChild(createHiddenField('recaptchaToken', token));
+
+                        if (rememberMeCheckbox && rememberMeCheckbox.checked) {
+                            realForm.appendChild(createHiddenField('remember-me', 'on'));
+                        }
+
+                        document.body.appendChild(realForm);
+                        realForm.submit();
+                    });
+                });
+            } else {
+                const errorText = await response.text();
+                if (errorText == "Логин занят!") {
+                    document.getElementById('login').classList.add('error-input');
+                    document.getElementById('loginError').textContent = 'Пользователь с таким именем уже существует';
+                    document.getElementById('loginError').classList.add('show');
+                    return;
+                } else if (errorText == "Email занят!") {
+                    document.getElementById('email').classList.add('error-input');
+                    document.getElementById('emailError').textContent = 'Email занят';
+                    document.getElementById('emailError').classList.add('show');
+                    return;
+                }
+            }
+        });
     });
-
-    if (response.ok) {
-        const realForm = document.createElement('form');
-        realForm.method = 'POST';
-        realForm.action = '/login';
-
-        const usernameField = document.createElement('input');
-        usernameField.type = 'hidden';
-        usernameField.name = 'username';
-        usernameField.value = login;
-
-        const passwordField = document.createElement('input');
-        passwordField.type = 'hidden';
-        passwordField.name = 'password';
-        passwordField.value = password;
-
-        const csrfField = document.createElement('input');
-        csrfField.type = 'hidden';
-        csrfField.name = csrfParam;
-        csrfField.value = csrfToken;
-
-        realForm.appendChild(usernameField);
-        realForm.appendChild(passwordField);
-        realForm.appendChild(csrfField);
-
-        document.body.appendChild(realForm);
-        realForm.submit();
-    } else {
-        const errorText = await response.text();
-        if (errorText == "Логин занят!") {
-            document.getElementById('login').classList.add('error-input');
-            document.getElementById('loginError').textContent = 'Пользователь с таким именем уже существует';
-            document.getElementById('loginError').classList.add('show');
-            return;
-        } else if (errorText == "Email занят!") {
-            document.getElementById('email').classList.add('error-input');
-            document.getElementById('emailError').textContent = 'Email занят';
-            document.getElementById('emailError').classList.add('show');
-            return;
-        }
-    }
 });
 
 document.getElementById('password').addEventListener('input', function() {

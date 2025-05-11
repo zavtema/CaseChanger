@@ -85,7 +85,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 realForm.appendChild(createHiddenField(csrfParam, csrfToken));
                 realForm.appendChild(createHiddenField('recaptchaToken', token));
 
-                // ✅ Обработка "Запомнить меня"
                 if (rememberMeCheckbox && rememberMeCheckbox.checked) {
                     realForm.appendChild(createHiddenField('remember-me', 'on'));
                 }
