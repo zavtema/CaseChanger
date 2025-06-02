@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .addFilterBefore(rateLimitingFilter, CaptchaAuthFilter.class)
                 .addFilterAt(captchaFilter, UsernamePasswordAuthenticationFilter.class) // заменяем стандартный логин-фильтр
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/api/users/login", "/api/users/register").permitAll()
+                        .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/img/**", "/api/users/login", "/api/users/register").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()

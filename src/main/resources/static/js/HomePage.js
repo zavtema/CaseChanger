@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const typewriter = document.getElementById("typewriter");
     const reveals = document.querySelectorAll(".reveal");
 
+    // Убираем курсор у печатающегося текста
     setTimeout(() => {
         typewriter.classList.add("finished");
     }, 1600);
@@ -11,17 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         reveals.forEach(el => {
             const elementTop = el.getBoundingClientRect().top;
-            const elementBottom = el.getBoundingClientRect().bottom;
 
-            // Если элемент полностью виден на экране
-            if (elementTop < windowHeight - 100 && elementBottom > 100) {
+            if (elementTop < windowHeight - 100) {
                 el.classList.add("visible");
-            } else {
-                el.classList.remove("visible");
             }
         });
     };
 
     window.addEventListener("scroll", revealOnScroll);
-    revealOnScroll();
+    revealOnScroll(); // запустить при загрузке
 });
