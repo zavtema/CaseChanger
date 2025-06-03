@@ -26,7 +26,6 @@ body {
 }
 
 .header {
-    position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
@@ -186,10 +185,11 @@ body {
     align-items: center;
     text-align: center;
     width: 100%;
-    margin-top: 140px;
+    margin-top: 50px;
 }
 
 .typewriter {
+    text-wrap: auto;
     display: inline-block;
     color: #00ffc6;
     overflow: hidden;
@@ -252,88 +252,116 @@ body {
 }
 
 .skins-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 160px 200px;
-    justify-items: center;
-    align-items: center;
-    width: 100%;
-    padding-top: 40px;
-
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Центрирует карточки по горизонтали */
+    gap: 60px 100px; /* Вертикальный и горизонтальный отступы */
     max-width: 1200px;
-    margin: 0 auto; /* ЭТО ЦЕНТРИРУЕТ СЕТКУ */
+    margin: 0 auto;
+    padding-top: 40px;
 }
 
-/* Размеры: увеличены ещё больше */
+.skin-item {
+    flex: 0 1 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.skin-caption {
+    margin-top: 12px;
+    font-size: 18px;
+    color: #00ffc6;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(0, 255, 198, 0.2);
+}
+
+/* Крупное оружие */
 .skin-awp img {
-    width: 650px;
+    transition: 1s;
+    border-radius: 20px;
+    width: 660px;
+}
+
+.skin-m4a1s img {
+    transition: 1s;
+    border-radius: 20px;
+    width: 620px;
 }
 
 .skin-ak img {
-    width: 550px;
+    transition: 1s;
+    border-radius: 20px;
+    width: 580px;
 }
 
-.skin-usp img {
-    width: 405px;
+
+.skin-mac img {
+    transition: 1s;
+    border-radius: 20px;
+    width: 440px;
 }
-.skin-deagle img {
+
+/* Пистолеты */
+.skin-usp img {
+    transition: 1s;
+    border-radius: 20px;
     width: 370px;
 }
 
-/* Анимации и стили */
-.skin-item img {
+.skin-glock img {
+    transition: 1s;
     border-radius: 20px;
-    transition: transform 0.6s ease, box-shadow 0.6s ease;
+    width: 360px;
 }
 
+.skin-deagle img {
+    transition: 1s;
+    border-radius: 20px;
+    width: 350px;
+}
+
+
 .skin-item img:hover {
-    transform: scale(1.06);
+    transform: scale(1.06) rotate(0.01turn);
     box-shadow: 0 0 40px rgba(0, 204, 190, 0.4); /* Цвет подобран мягче */
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
     .skins-grid {
-        grid-template-columns: 1fr;
+        flex-direction: column;
         gap: 40px;
     }
 
-    .skin-awp img {
+    .skin-item {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    .skin-item img {
         width: 95%;
         max-width: 400px;
     }
-
-    .skin-ak img {
-        width: 95%;
-        max-width: 340px;
-    }
-
-    .skin-usp img {
-        width: 95%;
-        max-width: 340px;
-    }
-
-    .skin-deagle img {
-        width: 95%;
-        max-width: 280px;
-    }
 }
-.skin-item:nth-child(1) {
-    align-self: start;
-    justify-self: start;
+.skin-caption {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #cccccc; /* базовый цвет */
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    text-shadow: none;
+    transition: color 0.4s ease, text-shadow 0.4s ease;
+    text-align: center;
+    pointer-events: none; /* не даёт «захватывать» подпись курсором */
 }
 
-.skin-item:nth-child(2) {
-    align-self: start;
-    justify-self: end;
-}
-
-.skin-item:nth-child(3) {
-    align-self: end;
-    justify-self: start;
-}
-
-.skin-item:nth-child(4) {
-    align-self: end;
-    justify-self: end;
+/* Подсветка подписи только при наведении на ссылку (которая содержит img) */
+.skin-item > a:hover + .skin-caption {
+    color: #00ffc6;
+    text-shadow: 0 0 8px rgba(0, 255, 198, 0.6),
+                 0 0 16px rgba(255, 46, 99, 0.4);
 }
